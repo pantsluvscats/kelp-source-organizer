@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelp Forest Research - Source Color Coding Organizer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background: #fef9ff;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+        h1, h2, h3, .tab, .filter-btn, .theme-tag, .source-meta, .color-key-item span,
+        .filter-section h3, .stat-labels, .connection-node {
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
+        }
+
+        /* Animated wave header */
+        header {
+            background: linear-gradient(135deg, #fce4ec, #e8d5f5, #d5e8f5, #dcedc8);
+            background-size: 300% 300%;
+            animation: headerShift 12s ease infinite;
+            padding: 28px 32px 40px;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes headerShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 22px;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q150 0 300 20 T600 20 T900 20 T1200 20 V30 H0Z' fill='%23fef9ff'/%3E%3C/svg%3E") repeat-x;
+            background-size: 600px 22px;
+        }
+        header h1 { font-size: 1.6rem; color: #5b3a7a; font-weight: 700; }
+        header p { color: #7a6090; margin-top: 4px; font-size: 0.9rem; }
+
+        .container { display: flex; height: calc(100vh - 108px); }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #fdf4ff, #f7f0fc);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #edd8f7;
+            flex-shrink: 0;
+        }
+        .sidebar h2 {
+            font-size: 0.85rem;
+            color: #b07cc8;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .color-key-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+            border: 2px solid transparent;
+        }
+        .color-key-item:hover {
+            background: rgba(176,124,200,0.08);
+            transform: translateX(3px);
+        }
+        .color-key-item.active {
+            background: rgba(176,124,200,0.12);
+            border-color: #d4b0e8;
+            box-shadow: 0 2px 8px rgba(176,124,200,0.15);
+        }
+        .color-swatch {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .color-key-item:hover .color-swatch { transform: scale(1.15); }
+        .color-key-item span { font-size: 0.82rem; line-height: 1.3; color: #444; }
+
+        .filter-section { margin-top: 20px; padding-top: 16px; border-top: 1px dashed #e0d0ee; }
+        .filter-section h3 { font-size: 0.78rem; color: #999; margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .filter-btn {
+            display: block;
+            width: 100%;
+            padding: 9px 14px;
+            margin-bottom: 6px;
+            background: #f3e8fa;
+            color: #6b4d80;
+            border: 1.5px solid #e8d4f4;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            text-align: center;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+            font-weight: 600;
+        }
+        .filter-btn:hover {
+            background: #ead0f8;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(176,124,200,0.18);
+        }
+        .filter-btn:active { transform: translateY(0); }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .tabs {
+            display: flex;
+            background: #fefaff;
+            border-bottom: 1px solid #edd8f7;
+            padding: 0 8px;
+        }
+        .tab {
+            padding: 14px 22px;
+            cursor: pointer;
+            color: #b0a0b8;
+            border-bottom: 3px solid transparent;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            border-radius: 12px 12px 0 0;
+        }
+        .tab:hover { color: #7a5a90; background: rgba(176,124,200,0.05); }
+        .tab.active {
+            color: #8e5aaa;
+            border-bottom-color: #c9a0e0;
+            background: rgba(176,124,200,0.06);
+        }
+
+        .tab-content { flex: 1; overflow-y: auto; padding: 28px; background: #fef9ff; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* Source Cards */
+        .source-card {
+            background: #fff;
+            border-radius: 18px;
+            margin-bottom: 22px;
+            overflow: hidden;
+            border: 1.5px solid #edd8f7;
+            box-shadow: 0 2px 12px rgba(176,124,200,0.08);
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        .source-card:hover {
+            box-shadow: 0 4px 20px rgba(176,124,200,0.14);
+            transform: translateY(-2px);
+        }
+        .source-header {
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .source-header:hover { background: rgba(176,124,200,0.03); }
+        .source-header h3 { font-size: 1rem; color: #4a2d6b; flex: 1; font-weight: 700; }
+        .source-meta { font-size: 0.78rem; color: #a090b0; margin-top: 4px; }
+        .source-toggle {
+            color: #c9a0e0;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+        }
+        .source-toggle.open { transform: rotate(180deg); }
+        .source-body { padding: 0 22px 22px; display: none; }
+        .source-body.open { display: block; }
+
+        /* Excerpt highlights */
+        .excerpt {
+            padding: 14px 18px;
+            margin: 10px 0;
+            border-radius: 14px;
+            border-left: 5px solid;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            position: relative;
+            cursor: default;
+            color: #1a1a1a;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+        }
+        .excerpt:hover {
+            transform: translateX(3px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .excerpt .theme-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .excerpt .excerpt-text { display: block; margin-top: 4px; }
+        .excerpt .excerpt-text q, q { font-style: italic; quotes: "\201C" "\201D"; }
+        .excerpt .excerpt-text q::before { content: open-quote; }
+        .excerpt .excerpt-text q::after { content: close-quote; }
+        .synthesis-paragraph q, .analysis-section q { font-style: italic; quotes: "\201C" "\201D"; }
+        .analysis-section q::before, .synthesis-paragraph q::before { content: open-quote; }
+        .analysis-section q::after, .synthesis-paragraph q::after { content: close-quote; }
+
+        /* Theme colors - soft pastel candy */
+        .theme-yellow { background: #fffbeb; border-color: #f5d76e; }
+        .theme-yellow .theme-tag { background: #fef3c7; color: #92700a; }
+        .theme-green { background: #ecfdf5; border-color: #86d9a0; }
+        .theme-green .theme-tag { background: #d1fae5; color: #166534; }
+        .theme-blue { background: #eff6ff; border-color: #93c5fd; }
+        .theme-blue .theme-tag { background: #dbeafe; color: #1e40af; }
+        .theme-pink { background: #fdf2f8; border-color: #f9a8d4; }
+        .theme-pink .theme-tag { background: #fce7f3; color: #9d174d; }
+        .theme-orange { background: #fff7ed; border-color: #fdba74; }
+        .theme-orange .theme-tag { background: #ffedd5; color: #9a3412; }
+
+        /* Analysis Panel */
+        .analysis-section {
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 22px;
+            border: 1.5px solid #edd8f7;
+            box-shadow: 0 2px 12px rgba(176,124,200,0.08);
+        }
+        .analysis-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #edd8f7;
+            color: #4a2d6b;
+            font-weight: 700;
+        }
+        .analysis-section p, .analysis-section li {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #333;
+        }
+        .analysis-section ul { padding-left: 20px; margin: 10px 0; }
+        .analysis-section li { margin-bottom: 8px; }
+        .analysis-section strong { color: #1a1a1a; }
+
+        .synthesis-paragraph {
+            background: linear-gradient(135deg, #fdf2f8, #fef9ff, #eff6ff);
+            border: 1.5px solid #f0d0e0;
+            border-radius: 18px;
+            padding: 26px;
+            margin: 22px 0;
+            font-size: 0.95rem;
+            line-height: 1.85;
+            color: #2d2d2d;
+            box-shadow: inset 0 1px 4px rgba(176,124,200,0.06);
+        }
+        .synthesis-paragraph em { color: #8e5aaa; font-style: normal; font-weight: 600; }
+
+        .stat-bar {
+            display: flex;
+            height: 26px;
+            border-radius: 13px;
+            overflow: hidden;
+            margin: 14px 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .stat-bar .supporting { background: linear-gradient(90deg, #86efac, #4ade80); }
+        .stat-bar .dissenting { background: linear-gradient(90deg, #fda4af, #fb7185); }
+        .stat-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: #888;
+            font-weight: 600;
+        }
+
+        /* Connection Map */
+        .connection-map {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .connection-node {
+            background: #fff;
+            padding: 16px 12px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            border: 2px solid #edd8f7;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+            color: #444;
+            box-shadow: 0 2px 8px rgba(176,124,200,0.06);
+        }
+        .connection-node:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(176,124,200,0.16);
+        }
+        .connection-node .author { font-weight: 700; color: #4a2d6b; display: block; margin-bottom: 4px; }
+        .connection-node .year { color: #b07cc8; font-weight: 700; }
+
+        /* Table styling */
+        table { border-radius: 12px; overflow: hidden; }
+        th { font-weight: 700; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdf4ff; }
+        ::-webkit-scrollbar-thumb { background: #e0c8f0; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d0b0e4; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; max-height: 200px; }
+            .connection-map { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kelp Forest Research ~ Source Color Coding Organizer</h1>
+        <p>5 sources organized by theme with color-coded excerpts and synthesis analysis</p>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Color Key</h2>
+            <div class="color-key-item active" data-theme="all" onclick="filterTheme('all', this)">
+                <div class="color-swatch" style="background: linear-gradient(135deg, #f0d060, #7ecb7e, #7eb8f0, #f0a0b0, #f0b870);"></div>
+                <span>All Themes</span>
+            </div>
+            <div class="color-key-item" data-theme="yellow" onclick="filterTheme('yellow', this)">
+                <div class="color-swatch" style="background: #f0d060;"></div>
+                <span><strong>SST as Primary Driver</strong> of kelp distribution</span>
+            </div>
+            <div class="color-key-item" data-theme="green" onclick="filterTheme('green', this)">
+                <div class="color-swatch" style="background: #7ecb7e;"></div>
+                <span><strong>Climate Threats:</strong> Range contractions &amp; biomass loss</span>
+            </div>
+            <div class="color-key-item" data-theme="blue" onclick="filterTheme('blue', this)">
+                <div class="color-swatch" style="background: #7eb8f0;"></div>
+                <span><strong>Ecological Interactions</strong> mediate climate impacts</span>
+            </div>
+            <div class="color-key-item" data-theme="pink" onclick="filterTheme('pink', this)">
+                <div class="color-swatch" style="background: #f0a0b0;"></div>
+                <span><strong>Species Distribution Models</strong> as essential tools</span>
+            </div>
+            <div class="color-key-item" data-theme="orange" onclick="filterTheme('orange', this)">
+                <div class="color-swatch" style="background: #f0b870;"></div>
+                <span><strong>Geographic Variation</strong> in kelp responses</span>
+            </div>
+
+            <div class="filter-section">
+                <h3>Quick Filters</h3>
+                <button class="filter-btn" onclick="expandAll()">Expand All Sources</button>
+                <button class="filter-btn" onclick="collapseAll()">Collapse All Sources</button>
+                <button class="filter-btn" onclick="countExcerpts()">Count Excerpts by Theme</button>
+            </div>
+            <div id="count-display" style="margin-top: 12px; font-size: 0.8rem; color: #555;"></div>
+        </aside>
+
+        <div class="main">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('sources', this)">Color-Coded Sources</div>
+                <div class="tab" onclick="switchTab('analysis', this)">Theme Analysis</div>
+                <div class="tab" onclick="switchTab('connections', this)">Connections Map</div>
+            </div>
+
+            <div class="tab-content">
+                <!-- SOURCES TAB -->
+                <div id="sources" class="tab-panel active">
+
+                    <!-- Source 1: Jayathilake & Costello 2020 -->
+                    <div class="source-card" data-source="jayathilake">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Jayathilake &amp; Costello (2020)</h3>
+                                <div class="source-meta">A modelled global distribution of the kelp biome | Biological Conservation 252</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-yellow" data-theme="yellow">
+                                <span class="theme-tag">SST as Primary Driver</span>
+                                <span class="excerpt-text"><q>Average sea surface temperature was the most important environmental variable for the biome across all species... The environmental variable with the highest gain when used in isolation was the annual average SST.</q> SST contributed <strong>47.7%</strong> to the MaxEnt model, with kelp occurring between 5-25&deg;C and never above 27&deg;C annual average.</span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text"><q>If sea surface temperature increases beyond these temperatures, such as due to global warming, it will alter the kelp distribution.</q> Australian temperate kelp forests have contracted due to ocean warming, and <em>Macrocystis pyrifera</em> in Australia has been predicted to disappear if predicted high sea surface temperatures in 2100 eventuate.</span>
+                            </div>
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text"><q>If kelp is absent, it may be due to ocean warming, high turbidity, and/or over-grazing following 'trophic cascades' caused by hunting and fishing of animals that predate sea urchins, and consequent over-grazing of kelp by the sea urchins.</q> Trophic cascades play a key role in kelp forest persistence beyond temperature alone.</span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">Used MaxEnt species distribution modelling to produce the first global distribution map of kelp as a polygon layer for GIS. The model estimated kelp biome covers <strong>1,469,900 km&sup2;</strong> and <strong>22%</strong> of the world's coastline, with high AUC (0.771) and 86% validation accuracy.</span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text">Kelp distribution is limited to latitudes 25&deg;-70&deg;N and 25&deg;-55&deg;S. The most important environmental variables varied by species and family&mdash;wave height dominated for individual species while SST dominated at the order level. Arctic kelp forests of <em>Laminaria digitata</em> have extended due to warming, while temperate forests have contracted.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source 2: Davis et al. 2022 -->
+                    <div class="source-card" data-source="davis">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Davis, Champion &amp; Coleman (2022)</h3>
+                                <div class="source-meta">Ecological interactions mediate projected loss of kelp biomass under climate change | Diversity and Distributions 28</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-yellow" data-theme="yellow">
+                                <span class="theme-tag">SST as Primary Driver</span>
+                                <span class="excerpt-text"><q>Summer maximum temperatures at the seabed</q> are a primary explanatory variable for both kelp cover and urchin density in stacked SDMs. <em>E. radiata</em> occupies a niche of 8-26&deg;C with optimal conditions near ~24&deg;C; temperatures above ~26&deg;C are <q>generally unsuitable for survival and reproduction.</q></span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text">Range contractions of kelp (~275 km) projected at lower latitudes (&lt;32&deg;S) by 2100 under RCP 8.5 (~3.4&deg;C warming). However, only moderate contractions (~55 km) under RCP 6.0 and none under RCP 2.6. Total kelp biomass losses under RCP 8.5 are only <strong>-3.5%</strong> when ecological interactions are considered, vs. <strong>-35.2%</strong> when ignored.</span>
+                            </div>
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text"><q>Incorporating ecological interactions with urchins reduced projected losses of kelp biomass by 14.8%, 33.4% and 31.7% under RCPs 2.6, 6.0 and 8.5, respectively.</q> Reduced urchin herbivory at higher latitudes under warming leads to <em>increased</em> kelp biomass, partially offsetting low-latitude losses. This is the central finding&mdash;biotic interactions fundamentally change projections.</span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">Used novel <q>stacked species distribution models</q> (stacked-SDMs) combining a kelp SDM and urchin SDM to project future kelp distribution and biomass. This approach incorporates habitat availability, <em>in situ</em> temperature and light, and urchin densities&mdash;factors <q>rarely considered when projecting the effects of climate change on kelp.</q></span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text">Latitudinal redistribution: kelp biomass losses at low latitudes (&lt;33&deg;S) are offset by gains at higher latitudes (&gt;33&deg;S). Vertical migration from shallow to deeper, cooler refugia is also projected. <q>These projected vertical migrations for kelp mimic those of terrestrial plant and animal species in mountainous areas.</q></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source 3: Beas-Luna et al. 2020 -->
+                    <div class="source-card" data-source="beasluna">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Beas-Luna et al. (2020)</h3>
+                                <div class="source-meta">Geographic variation in responses of kelp forest communities of the California Current | Global Change Biology 26</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-yellow" data-theme="yellow">
+                                <span class="theme-tag">SST as Primary Driver</span>
+                                <span class="excerpt-text"><q>Mean and maximum SST exhibited a negative poleward gradient where temperature decreased with increasing latitude.</q> The 2014-2016 marine heatwave (<q>the Blob</q> + ENSO) with anomalously warm SSTs drove ~36% of the decline in canopy kelp species, confirming temperature as the key stressor.</span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text"><q>Canopy-forming kelps declined in abundance across the entire study region.</q> The overall rate of kelp decline was -0.043 year<sup>-1</sup>. The marine heatwave was associated with ~36% of this decline. <q>Future community reorganization through the year 2050 is projected to be greatest in the southern (BCS) and northern (NorCA) ecoregions.</q></span>
+                            </div>
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text"><q>Urchins increased in abundance at an overall rate of 0.032 year<sup>-1</sup></q> with significant variation among ecoregions. Declining kelp is associated with increasing urchin abundance in NorCA and CenCA. Functional group shifts cascaded through the food web: detritivores declined, suspension feeders and planktivores increased across the range.</span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">Used hierarchical Bayesian linear modeling to evaluate rates of change among 18 functional groups across 5 ecoregions, with and without temperature as an explanatory variable. Estimated geographic shifts using centroid analysis and range velocities. Data from 469 sites, 373 species across 5 long-term monitoring programs.</span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text"><q>Kelp declines were highest in the southernmost portion of the range and in the NorCA ecoregion.</q> Communities in central California were more resilient. <q>The centroids of biomass for canopy-forming kelp and detritivores have shifted to the north and their ranges have expanded,</q> while higher trophic levels shifted south. Dramatic regional differences in responses.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source 4: Vergés et al. 2014 -->
+                    <div class="source-card" data-source="verges">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Verg&eacute;s et al. (2014)</h3>
+                                <div class="source-meta">The tropicalization of temperate marine ecosystems | Proc. R. Soc. B 281</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-yellow" data-theme="yellow">
+                                <span class="theme-tag">SST as Primary Driver</span>
+                                <span class="excerpt-text"><q>Temperate regions along poleward-flowing western boundary currents have warmed two to three times faster than the global mean.</q> Ocean warming is the fundamental driver enabling tropicalization, with warmer waters increasing grazing rates of tropical fishes and <q>it is this temperature-mediated increase in grazing that has been linked to the regional disappearance of kelp forests.</q></span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text"><q>The mass disappearance of kelp (<em>Ecklonia</em> spp.) and fucoid (<em>Sargassum</em> spp.) beds in southern Japan totals several thousand hectares, representing a loss of more than 40% of the cover of macroalgal beds since the 1990s.</q> In the Mediterranean, rabbitfish have caused 60% loss in benthic biomass and 40% decrease in species richness. Tropicalization is a global phenomenon.</span>
+                            </div>
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text">Central thesis: <q>Climate-driven changes in biotic interactions can profoundly alter ecological communities.</q> Proposes a novel phase shift: tropical herbivorous fishes expanding poleward cause overgrazing and deforestation of temperate kelp/algal forests. <q>Herbivory is especially intense in marine environments, with approximately 70% of benthic primary production being consumed by herbivores globally.</q></span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">References CMIP5 climate models projecting SST trends for 2005-2100 under RCP8.5 scenarios. Uses oceanographic, distributional, ecological, and fisheries data from multiple regions to document tropicalization patterns. Emphasizes that model projections of western boundary current warming will <q>continue to warm faster than the global average.</q></span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text">Documents dramatically different tropicalization processes across regions: <strong>Japan</strong> (<q>isoyake</q> - total kelp loss replaced by coral), <strong>Mediterranean</strong> (rabbitfish deforestation via Suez Canal invasion), <strong>eastern Australia</strong> (subtropical fish herbivory increasing), <strong>southeastern USA</strong> (parrotfish 22-fold increase). Western boundary currents create hotspots at Japan, eastern USA, eastern Australia, Brazil, and southeastern Africa.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source 5: Batista et al. 2018 -->
+                    <div class="source-card" data-source="batista">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Batista et al. (2018)</h3>
+                                <div class="source-meta">Kelps' Long-Distance Dispersal: Role of Ecological/Oceanographic Processes | Diversity 10(11)</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-yellow" data-theme="yellow">
+                                <span class="theme-tag">SST as Primary Driver</span>
+                                <span class="excerpt-text"><q>Among the environmental predictors analyzed, primary productivity, temperatures and phosphates presented the highest contribution to the performance of model for both species.</q> Temperature is a key limiting factor: <em>Durvillaea antarctica</em> tolerates up to 17&deg;C, and <q>climatic projections suggest potential changes in species distribution, especially for subtidal kelps, which are vulnerable to SST changes.</q></span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text"><q>Losses of kelp forests' distributional ranges are reported in various regions of the world.</q> The reduction of <em>Saccorhiza polyschides</em> and <em>Laminaria hyperborea</em> in Spain was related to SST increases and reduced upwelling. However, some kelp may find refuge in deeper environments, suggesting not all loss is permanent.</span>
+                            </div>
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text"><q>Density dependent mechanisms, such as competition, predation, and herbivory, represent additional dispersal and developmental barriers in marine environments.</q> Biological interactions define the realized vs. fundamental niche for kelp&mdash;species may have suitable habitat but cannot establish due to competitive exclusion or herbivory pressure.</span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">Used MaxEnt niche modeling for <em>M. pyrifera</em> and <em>D. antarctica</em> globally, achieving AUC &gt;0.9 and sensitivity &gt;0.95. Models revealed <q>predicted niche suitability in the Southwestern Atlantic Ocean was broader than the known distribution,</q> identifying potential future refugia and stepping-stone habitats for conservation.</span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text">Kelp rafts of <em>M. pyrifera</em> and <em>D. antarctica</em> traveled at least <strong>2,700 km</strong> from the Falkland Islands to Brazil/Uruguay via the Malvinas Current, demonstrating massive dispersal potential. Regional oceanographic features (currents, upwelling, cyclones) create unique dispersal corridors. <q>Emerging regions can function as refuges and stepping-stones</q> for kelp conservation.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ANALYSIS TAB -->
+                <div id="analysis" class="tab-panel">
+                    <div class="analysis-section">
+                        <h3 style="color: #b08a20;">Yellow Theme Deep-Dive: SST as the Primary Driver of Kelp Distribution</h3>
+
+                        <p><strong>1. What are the themes found throughout this highlighted material?</strong></p>
+                        <ul>
+                            <li><strong>Sea surface temperature is the single most important abiotic variable</strong> governing where kelp can and cannot exist globally, functioning as both a direct physiological constraint and an indirect ecological modulator.</li>
+                            <li><strong>Temperature thresholds define hard boundaries</strong> for kelp persistence, with most species confined to 5-25&deg;C and experiencing mortality above ~26-27&deg;C.</li>
+                        </ul>
+
+                        <p style="margin-top: 16px;"><strong>2. What is similar across the sources? What are the common points?</strong></p>
+                        <ul>
+                            <li>All five sources identify SST (or seabed temperature) as a primary or the primary variable controlling kelp distribution, whether through MaxEnt models (Jayathilake; Batista), stacked SDMs (Davis), Bayesian models (Beas-Luna), or ecological synthesis (Verg&eacute;s).</li>
+                            <li>All agree that warming ocean temperatures are driving observable changes in kelp forests <em>right now</em>, not just in projections.</li>
+                            <li>All five link temperature to both direct effects (physiological stress, mortality) and indirect effects (changing herbivore behavior, enabling range shifts of tropical grazers, altering urchin dynamics).</li>
+                            <li>All acknowledge that SST alone is insufficient to fully explain kelp dynamics&mdash;other variables (wave height, light, nutrients, substrate, biotic interactions) matter&mdash;but SST remains the dominant signal.</li>
+                        </ul>
+
+                        <p style="margin-top: 16px;"><strong>3. Are there dissenting claims or just supporting claims?</strong></p>
+                        <div class="stat-bar">
+                            <div class="supporting" style="width: 85%;"></div>
+                            <div class="dissenting" style="width: 15%;"></div>
+                        </div>
+                        <div class="stat-labels">
+                            <span>~85% Supporting</span>
+                            <span>~15% Nuancing/Dissenting</span>
+                        </div>
+                        <ul style="margin-top: 12px;">
+                            <li><strong>Supporting (~85%):</strong> All five sources fundamentally agree that SST is the primary driver. Jayathilake's 47.7% model contribution, Davis's temperature-dependent kelp cover, Beas-Luna's heatwave-driven declines, Verg&eacute;s's temperature-mediated herbivory thesis, and Batista's temperature as a top niche variable all reinforce this.</li>
+                            <li><strong>Nuancing (~15%):</strong> Davis argues that models using SST <em>alone</em> dramatically overestimate kelp losses (by up to 35.2% vs. 3.5% when urchin interactions are included). Jayathilake notes wave height was the most important variable for 23 of 46 individual species. Beas-Luna found that removing the heatwave from analyses only reduced the decline by ~36%, meaning other factors also drive loss. These aren't true dissents but important qualifications.</li>
+                        </ul>
+
+                        <p style="margin-top: 16px;"><strong>4. What is most significant about what you've read in this color code?</strong></p>
+                        <p>The most significant finding is the <strong>paradox of temperature's dual role</strong>: SST simultaneously destroys kelp forests at warm range edges (through direct thermal stress and by enabling tropical herbivore invasions) while potentially <em>promoting</em> kelp growth at cool range edges (by warming sub-optimal temperatures into the productive range and by reducing cold-adapted urchin populations). This means the same warming trend can cause simultaneous loss and gain depending on latitude, depth, and local ecological context. Davis et al. (2022) best captures this nuance: what appears as catastrophic global loss through a temperature-only lens becomes a complex redistribution when ecological interactions are considered.</p>
+
+                        <p style="margin-top: 16px;"><strong>5. Emerging theme sentence:</strong></p>
+                        <div class="synthesis-paragraph">
+                            <em>While sea surface temperature is unequivocally the dominant abiotic driver of global kelp distribution, its effects are profoundly mediated by ecological interactions&mdash;particularly herbivory&mdash;such that temperature-only models systematically misrepresent the future of kelp forests, overestimating losses at low latitudes while underestimating compensatory gains at higher latitudes and deeper refugia.</em>
+                            <br><br>
+                            <span style="color: #666; font-size: 0.85rem;">This theme has <strong>narrowed</strong> from the starting theme of <q>SST as primary driver.</q> Initially, the theme was simply that temperature matters most. After analysis, it has sharpened into a more complex claim: temperature matters most, but <em>how</em> it matters depends entirely on local ecological context, making purely abiotic models dangerously misleading for conservation planning.</span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Synthesized Paragraph Using All 5 Sources</h3>
+                        <div class="synthesis-paragraph">
+                            Sea surface temperature stands as the most powerful predictor of kelp forest distribution worldwide, yet its influence on these critical marine ecosystems operates through far more complex pathways than simple thermal tolerance. Jayathilake and Costello (2020) demonstrated through global MaxEnt modeling that average SST alone contributes nearly half (47.7%) of the predictive power for kelp distribution, with kelp confined to waters averaging between 5&deg;C and 25&deg;C. This temperature dependency makes kelp forests acutely vulnerable to ocean warming, as Beas-Luna et al. (2020) documented along the entire California Current, where the 2014&ndash;2016 marine heatwave drove region-wide canopy kelp declines at a rate of -0.043 year<sup>-1</sup>, with approximately 36% of the decline directly attributable to anomalous warming. However, temperature exerts its influence not only through direct physiological stress but also by restructuring the ecological interactions that govern kelp persistence. Verg&eacute;s et al. (2014) revealed that ocean warming along western boundary currents enables tropical herbivorous fishes to invade temperate waters, where their intensified grazing has already caused the mass disappearance of thousands of hectares of kelp in southern Japan and the deforestation of hundreds of kilometers of Mediterranean coastline. Crucially, Davis, Champion, and Coleman (2022) showed that when these ecological interactions&mdash;particularly urchin herbivory&mdash;are incorporated into species distribution models, projected kelp biomass losses under the most severe climate scenario (RCP 8.5) shrink from -35.2% to merely -3.5%, because warming simultaneously reduces urchin densities at higher latitudes, releasing kelp from grazing pressure and enabling compensatory biomass gains. Even the dispersal and colonization potential of kelp is temperature-mediated: Batista et al. (2018) found that temperature and primary productivity are the strongest predictors in niche models for <em>Macrocystis pyrifera</em> and <em>Durvillaea antarctica</em>, and that kelp rafts can remain physiologically viable across dispersal distances exceeding 2,700 km only when oceanographic conditions maintain suitable thermal windows. Together, these five studies reveal that while SST sets the fundamental boundaries of the kelp biome, the realized future of kelp forests will be determined by how temperature interacts with herbivory, dispersal, depth refugia, and regional oceanographic variation&mdash;a complexity that demands ecologically integrated modeling approaches for effective conservation.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONNECTIONS TAB -->
+                <div id="connections" class="tab-panel">
+                    <div class="analysis-section">
+                        <h3>Source Connection Map</h3>
+                        <p style="margin-bottom: 16px;">How the 5 sources relate to each other across all themes:</p>
+                        <div class="connection-map">
+                            <div class="connection-node" style="border-color: #f0d060;">
+                                <span class="author">Jayathilake &amp; Costello</span>
+                                <span class="year">2020</span>
+                                <br>Global distribution model<br>SST = 47.7% of prediction
+                            </div>
+                            <div class="connection-node" style="border-color: #7ecb7e;">
+                                <span class="author">Davis et al.</span>
+                                <span class="year">2022</span>
+                                <br>Stacked SDMs + urchins<br>E. Australia projections
+                            </div>
+                            <div class="connection-node" style="border-color: #7eb8f0;">
+                                <span class="author">Beas-Luna et al.</span>
+                                <span class="year">2020</span>
+                                <br>California Current<br>Heatwave impacts on FGs
+                            </div>
+                            <div class="connection-node" style="border-color: #f0a0b0;">
+                                <span class="author">Verg&eacute;s et al.</span>
+                                <span class="year">2014</span>
+                                <br>Tropicalization review<br>Herbivore-driven phase shifts
+                            </div>
+                            <div class="connection-node" style="border-color: #f0b870;">
+                                <span class="author">Batista et al.</span>
+                                <span class="year">2018</span>
+                                <br>Kelp dispersal/rafting<br>Niche models for conservation
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Key Cross-Source Connections</h3>
+                        <ul>
+                            <li><strong style="color: #b08a20;">Jayathilake &harr; Batista:</strong> Both use MaxEnt modeling to map kelp distribution. Jayathilake provides the global biome map; Batista models individual species (<em>M. pyrifera</em>, <em>D. antarctica</em>) to identify dispersal corridors and potential refugia beyond known ranges.</li>
+                            <li><strong style="color: #2d7a2d;">Jayathilake &harr; Davis:</strong> Jayathilake's global model shows SST's dominance; Davis demonstrates that SST-only models are incomplete without ecological interactions (urchin herbivory), producing dramatically different (and more optimistic) projections.</li>
+                            <li><strong style="color: #2a6aaa;">Davis &harr; Beas-Luna:</strong> Both document urchin-kelp dynamics but in different hemispheres. Davis models future urchin decline benefiting kelp in Australia; Beas-Luna documents present urchin increases harming kelp in California. This contrast highlights how the same warming trend produces opposite urchin responses at different latitudes.</li>
+                            <li><strong style="color: #a03050;">Verg&eacute;s &harr; Beas-Luna:</strong> Verg&eacute;s's tropicalization framework explains the mechanism behind Beas-Luna's observed poleward shifts of functional groups. Beas-Luna's piscivore increases in southern ecoregions align with Verg&eacute;s's prediction of tropical fish invasion.</li>
+                            <li><strong style="color: #8a5a10;">Verg&eacute;s &harr; Davis:</strong> Verg&eacute;s describes herbivore-mediated kelp loss (tropical fish) while Davis describes herbivore-mediated kelp <em>gain</em> (urchin decline). Both emphasize that biotic interactions, not just temperature, determine kelp fate&mdash;but through opposite mechanisms.</li>
+                            <li><strong style="color: #9b59b6;">Batista &harr; All:</strong> Batista's discovery that kelp can disperse 2,700+ km suggests that range contractions documented by the other four sources may be partially compensated by long-distance colonization of newly suitable habitats&mdash;a recovery mechanism the other studies don't consider.</li>
+                        </ul>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>Theme Presence Across Sources</h3>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 12px;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #e8ddf0;">
+                                    <th style="text-align: left; padding: 8px; color: #666;">Theme</th>
+                                    <th style="padding: 8px;">Jayathilake</th>
+                                    <th style="padding: 8px;">Davis</th>
+                                    <th style="padding: 8px;">Beas-Luna</th>
+                                    <th style="padding: 8px;">Verg&eacute;s</th>
+                                    <th style="padding: 8px;">Batista</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #e8ddf0;">
+                                    <td style="padding: 8px; color: #b08a20;">SST as Driver</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e8ddf0;">
+                                    <td style="padding: 8px; color: #2d7a2d;">Climate Threats</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e8ddf0;">
+                                    <td style="padding: 8px; color: #2a6aaa;">Ecological Interactions</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #e8ddf0;">
+                                    <td style="padding: 8px; color: #a03050;">SDMs / Modeling</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9675;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; color: #8a5a10;">Geographic Variation</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 8px; font-size: 0.8rem; color: #999;">&#9679; = Strong presence &nbsp; &#9675; = Minor/indirect presence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterTheme(theme, el) {
+            document.querySelectorAll('.color-key-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+
+            document.querySelectorAll('.excerpt').forEach(excerpt => {
+                if (theme === 'all') {
+                    excerpt.style.display = 'block';
+                } else {
+                    excerpt.style.display = excerpt.dataset.theme === theme ? 'block' : 'none';
+                }
+            });
+        }
+
+        function toggleSource(header) {
+            const body = header.nextElementSibling;
+            const toggle = header.querySelector('.source-toggle');
+            body.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.source-body').forEach(b => b.classList.add('open'));
+            document.querySelectorAll('.source-toggle').forEach(t => t.classList.add('open'));
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.source-body').forEach(b => b.classList.remove('open'));
+            document.querySelectorAll('.source-toggle').forEach(t => t.classList.remove('open'));
+        }
+
+        function countExcerpts() {
+            const themes = { yellow: 0, green: 0, blue: 0, pink: 0, orange: 0 };
+            const labels = {
+                yellow: 'SST as Driver',
+                green: 'Climate Threats',
+                blue: 'Ecological Interactions',
+                pink: 'SDMs / Modeling',
+                orange: 'Geographic Variation'
+            };
+            document.querySelectorAll('.excerpt').forEach(e => {
+                if (themes[e.dataset.theme] !== undefined) themes[e.dataset.theme]++;
+            });
+            let html = '<strong style="color:#333;">Excerpt Counts:</strong><br>';
+            for (const [key, count] of Object.entries(themes)) {
+                html += `<span style="color:${getColor(key)};">${labels[key]}: ${count}</span><br>`;
+            }
+            document.getElementById('count-display').innerHTML = html;
+        }
+
+        function getColor(theme) {
+            const colors = { yellow: '#b08a20', green: '#2d7a2d', blue: '#2a6aaa', pink: '#a03050', orange: '#8a5a10' };
+            return colors[theme] || '#333';
+        }
+
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Auto-expand all sources on load
+        expandAll();
+    </script>
+</body>
+</html>
