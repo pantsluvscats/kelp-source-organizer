@@ -237,6 +237,8 @@
         .theme-pink .theme-tag { background: #fce7f3; color: #9d174d; }
         .theme-orange { background: #fff7ed; border-color: #fdba74; }
         .theme-orange .theme-tag { background: #ffedd5; color: #9a3412; }
+        .theme-purple { background: #faf5ff; border-color: #c084fc; }
+        .theme-purple .theme-tag { background: #f3e8ff; color: #6b21a8; }
 
         /* Analysis Panel */
         .analysis-section {
@@ -325,6 +327,72 @@
         table { border-radius: 12px; overflow: hidden; }
         th { font-weight: 700; }
 
+        /* Theme Overview Cards */
+        .theme-overview-card {
+            background: #fff;
+            border-radius: 18px;
+            margin-bottom: 22px;
+            padding: 24px 28px;
+            border: 1.5px solid #edd8f7;
+            box-shadow: 0 2px 12px rgba(176,124,200,0.08);
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        .theme-overview-card:hover {
+            box-shadow: 0 4px 20px rgba(176,124,200,0.14);
+            transform: translateY(-2px);
+        }
+        .theme-overview-card h3 {
+            font-size: 1.1rem;
+            color: #4a2d6b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .theme-overview-card .theme-desc {
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .theme-source-list {
+            list-style: none;
+            padding: 0;
+        }
+        .theme-source-list li {
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: #fdf4ff;
+            border-left: 4px solid #d4b0e8;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .theme-source-list li:hover {
+            background: #f7e8ff;
+            transform: translateX(3px);
+        }
+        .theme-source-list li strong {
+            color: #4a2d6b;
+        }
+        .theme-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .theme-header-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fdf4ff; }
@@ -385,6 +453,7 @@
         <div class="main">
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('sources', this)">Color-Coded Sources</div>
+                <div class="tab" onclick="switchTab('themes', this)">Themes Overview</div>
                 <div class="tab" onclick="switchTab('analysis', this)">Theme Analysis</div>
                 <div class="tab" onclick="switchTab('connections', this)">Connections Map</div>
             </div>
@@ -559,6 +628,79 @@
                     </div>
                 </div>
 
+                <!-- THEMES OVERVIEW TAB -->
+                <div id="themes" class="tab-panel">
+
+                    <div class="theme-overview-card" style="border-left: 5px solid #f0d060;">
+                        <div class="theme-header-row">
+                            <span class="theme-number" style="background: #fffbeb; color: #92700a;">1</span>
+                            <h3>Climate Change &amp; Ocean Warming as Drivers of Kelp Decline</h3>
+                        </div>
+                        <p class="theme-desc">All five sources identify rising ocean temperatures as the fundamental force reshaping kelp forests worldwide, whether through direct thermal stress, enabling marine heatwaves, or warming via western boundary currents.</p>
+                        <ul class="theme-source-list">
+                            <li style="border-left-color: #f0d060;"><strong>Jayathilake &amp; Costello (2020)</strong> &mdash; Sea surface temperature is the most important variable for kelp distribution globally, contributing 47.7% to the MaxEnt model.</li>
+                            <li style="border-left-color: #f0d060;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Marine heatwaves (&ldquo;the Blob&rdquo; and ENSO) caused major regional kelp losses along the California Current, with ~36% of canopy kelp decline directly attributable to anomalous warming.</li>
+                            <li style="border-left-color: #f0d060;"><strong>Davis, Champion &amp; Coleman (2022)</strong> &mdash; Projects kelp range contractions of ~275 km at lower latitudes by 2100 under high warming scenarios (RCP 8.5, ~3.4&deg;C).</li>
+                            <li style="border-left-color: #f0d060;"><strong>Verg&eacute;s et al. (2014)</strong> &mdash; Warming via western boundary currents creates hotspots that drive tropicalization of temperate ecosystems, with temperate coastlines warming 2&ndash;3x faster than the global mean.</li>
+                        </ul>
+                    </div>
+
+                    <div class="theme-overview-card" style="border-left: 5px solid #7eb8f0;">
+                        <div class="theme-header-row">
+                            <span class="theme-number" style="background: #eff6ff; color: #1e40af;">2</span>
+                            <h3>Ecological Interactions &amp; Trophic Cascades</h3>
+                        </div>
+                        <p class="theme-desc">Biotic interactions&mdash;particularly herbivory by sea urchins and tropical fishes&mdash;fundamentally mediate how climate change affects kelp forests, often determining outcomes more than temperature alone.</p>
+                        <ul class="theme-source-list">
+                            <li style="border-left-color: #7eb8f0;"><strong>Davis, Champion &amp; Coleman (2022)</strong> &mdash; Incorporating urchin herbivory into models significantly changes kelp loss projections; reduced urchin grazing at higher latitudes may actually offset some kelp losses (losses shrink from -35.2% to -3.5% under RCP 8.5).</li>
+                            <li style="border-left-color: #7eb8f0;"><strong>Verg&eacute;s et al. (2014)</strong> &mdash; Range expansion of tropical herbivorous fish into temperate waters causes overgrazing and community phase shifts away from kelp/macroalgal dominance; ~70% of benthic production is consumed by herbivores globally.</li>
+                            <li style="border-left-color: #7eb8f0;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Sea urchin shifts from passive to active herbivory lead to kelp forest deforestation and urchin barren formation; urchins increased at a rate of 0.032 year<sup>-1</sup> across the study region.</li>
+                        </ul>
+                    </div>
+
+                    <div class="theme-overview-card" style="border-left: 5px solid #f0b870;">
+                        <div class="theme-header-row">
+                            <span class="theme-number" style="background: #fff7ed; color: #9a3412;">3</span>
+                            <h3>Kelp Distribution, Dispersal &amp; Biogeography</h3>
+                        </div>
+                        <p class="theme-desc">Kelp forests span vast geographic ranges with significant regional variation in species composition and responses to change, and ocean currents enable long-distance dispersal that may offer pathways for recovery.</p>
+                        <ul class="theme-source-list">
+                            <li style="border-left-color: #f0b870;"><strong>Jayathilake &amp; Costello (2020)</strong> &mdash; The kelp biome covers ~1,469,900 km&sup2; across 22% of the world&rsquo;s coastline, distributed mainly in temperate and sub-polar regions between 25&ndash;70&deg;N and 25&ndash;55&deg;S.</li>
+                            <li style="border-left-color: #f0b870;"><strong>Batista et al. (2018)</strong> &mdash; Ocean currents and storms drive long-distance kelp raft dispersal (2,700+ km), with niche models revealing suitable habitat beyond current range edges that may serve as refugia and stepping-stones.</li>
+                            <li style="border-left-color: #f0b870;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Regional variation in kelp responses across ecoregions, with poleward species range shifts documented; centroids of canopy kelp biomass shifted northward while community resilience varied by latitude.</li>
+                        </ul>
+                    </div>
+
+                    <div class="theme-overview-card" style="border-left: 5px solid #c084fc;">
+                        <div class="theme-header-row">
+                            <span class="theme-number" style="background: #faf5ff; color: #6b21a8;">4</span>
+                            <h3>Socio-Economic Impacts of Kelp Forest Loss</h3>
+                        </div>
+                        <p class="theme-desc">Kelp forests underpin coastal economies through fisheries, recreation, and ecosystem services. Their decline threatens livelihoods, food security, and the economic well-being of coastal communities worldwide.</p>
+                        <ul class="theme-source-list">
+                            <li style="border-left-color: #c084fc;"><strong>Davis, Champion &amp; Coleman (2022)</strong> &mdash; Kelp provides ecosystem goods and services valued at ~$1 million AUD per kilometer of coast per year in Australia, underscoring the enormous economic stakes of kelp decline.</li>
+                            <li style="border-left-color: #c084fc;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Kelp forests support fisheries and recreation across three nations (USA, Canada, Mexico); the study highlights the urgency of adaptive strategies to <q>sustain livelihoods and ensure food security.</q></li>
+                            <li style="border-left-color: #c084fc;"><strong>Verg&eacute;s et al. (2014)</strong> &mdash; Tropicalization impacts world fisheries; the shift in species composition affects commercial catch and coastal economies, with the mass loss of thousands of hectares of kelp in Japan directly impacting fishing communities.</li>
+                            <li style="border-left-color: #c084fc;"><strong>Jayathilake &amp; Costello (2020)</strong> &mdash; Kelp forests provide habitat for commercial fish species and mammals of conservation importance; indirect economic benefits stem from kelp&rsquo;s role as a foundation species supporting harvested populations.</li>
+                        </ul>
+                    </div>
+
+                    <div class="theme-overview-card" style="border-left: 5px solid #7ecb7e;">
+                        <div class="theme-header-row">
+                            <span class="theme-number" style="background: #ecfdf5; color: #166534;">5</span>
+                            <h3>Conservation, Modeling &amp; Management Strategies</h3>
+                        </div>
+                        <p class="theme-desc">Effective conservation of kelp forests depends on accurate predictive models, coordinated monitoring across regions, and management strategies that account for ecological complexity rather than temperature alone.</p>
+                        <ul class="theme-source-list">
+                            <li style="border-left-color: #7ecb7e;"><strong>Jayathilake &amp; Costello (2020)</strong> &mdash; The global kelp distribution map aids planning of marine reserves, modeling climate change effects, and estimating blue (ocean) carbon storage.</li>
+                            <li style="border-left-color: #7ecb7e;"><strong>Davis, Champion &amp; Coleman (2022)</strong> &mdash; Stacked species distribution models that include ecological interactions produce more accurate projections for evidence-based management; temperature-only models are <q>dangerously misleading for conservation planning.</q></li>
+                            <li style="border-left-color: #7ecb7e;"><strong>Batista et al. (2018)</strong> &mdash; Niche modeling and refuge mapping are essential for transnational conservation planning; distinguishing natural dispersal from bioinvasion matters for management decisions.</li>
+                            <li style="border-left-color: #7ecb7e;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Highlights the need for multiregional monitoring coordination and adaptive management strategies, including the role of marine protected areas (MPAs) in building resilience.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
                 <!-- ANALYSIS TAB -->
                 <div id="analysis" class="tab-panel">
                     <div class="analysis-section">
@@ -703,13 +845,21 @@
                                     <td style="text-align: center; padding: 8px;">&#9675;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                 </tr>
-                                <tr>
+                                <tr style="border-bottom: 1px solid #e8ddf0;">
                                     <td style="padding: 8px; color: #8a5a10;">Geographic Variation</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; color: #6b21a8;">Socio-Economic</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9675;</td>
                                 </tr>
                             </tbody>
                         </table>
