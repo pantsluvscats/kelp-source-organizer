@@ -393,6 +393,179 @@
             margin-bottom: 6px;
         }
 
+        /* Similarities & Differences */
+        .sim-diff-section {
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 22px;
+            border: 1.5px solid #edd8f7;
+            box-shadow: 0 2px 12px rgba(176,124,200,0.08);
+        }
+        .sim-diff-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #edd8f7;
+            color: #4a2d6b;
+            font-weight: 700;
+        }
+        .sim-col-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 14px;
+        }
+        @media (max-width: 900px) {
+            .sim-col-layout { grid-template-columns: 1fr; }
+        }
+        .sim-box, .diff-box {
+            border-radius: 14px;
+            padding: 18px 20px;
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+        .sim-box {
+            background: #ecfdf5;
+            border: 1.5px solid #86d9a0;
+        }
+        .sim-box h4 { color: #166534; margin-bottom: 10px; font-size: 0.95rem; }
+        .diff-box {
+            background: #fff7ed;
+            border: 1.5px solid #fdba74;
+        }
+        .diff-box h4 { color: #9a3412; margin-bottom: 10px; font-size: 0.95rem; }
+        .sim-box ul, .diff-box ul {
+            padding-left: 18px;
+            margin: 0;
+        }
+        .sim-box li, .diff-box li {
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .compare-pair {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            border: 1.5px solid #edd8f7;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+        }
+        .compare-pair:hover {
+            box-shadow: 0 3px 14px rgba(176,124,200,0.12);
+            transform: translateY(-1px);
+        }
+        .compare-pair h4 {
+            font-size: 0.92rem;
+            color: #5b3a7a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .compare-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-right: 4px;
+        }
+        .tag-sim { background: #d1fae5; color: #166534; }
+        .tag-diff { background: #ffedd5; color: #9a3412; }
+        .venn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .venn-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 340px;
+        }
+        .venn-circle {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            padding: 50px 40px;
+            opacity: 0.85;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .venn-circle:hover {
+            opacity: 1;
+            transform: scale(1.03);
+            z-index: 10;
+        }
+        .venn-circle strong {
+            display: block;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+        }
+        .venn-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.92);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            text-align: center;
+            z-index: 5;
+            border: 1.5px solid #edd8f7;
+            box-shadow: 0 2px 10px rgba(176,124,200,0.12);
+            max-width: 200px;
+        }
+        .venn-center strong {
+            display: block;
+            color: #5b3a7a;
+            margin-bottom: 4px;
+            font-size: 0.8rem;
+        }
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-top: 14px;
+        }
+        .compare-table th {
+            background: #fdf4ff;
+            color: #5b3a7a;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 2px solid #edd8f7;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .compare-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0e6f6;
+            color: #333;
+            line-height: 1.5;
+            vertical-align: top;
+        }
+        .compare-table tr:hover td {
+            background: rgba(176,124,200,0.04);
+        }
+        .compare-table .cat-label {
+            font-weight: 700;
+            color: #5b3a7a;
+            white-space: nowrap;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fdf4ff; }
@@ -454,6 +627,7 @@
             <div class="tabs">
                 <div class="tab active" onclick="switchTab('sources', this)">Color-Coded Sources</div>
                 <div class="tab" onclick="switchTab('themes', this)">Themes Overview</div>
+                <div class="tab" onclick="switchTab('simdiff', this)">Similarities &amp; Differences</div>
                 <div class="tab" onclick="switchTab('analysis', this)">Theme Analysis</div>
                 <div class="tab" onclick="switchTab('connections', this)">Connections Map</div>
             </div>
@@ -697,6 +871,285 @@
                             <li style="border-left-color: #7ecb7e;"><strong>Batista et al. (2018)</strong> &mdash; Niche modeling and refuge mapping are essential for transnational conservation planning; distinguishing natural dispersal from bioinvasion matters for management decisions.</li>
                             <li style="border-left-color: #7ecb7e;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Highlights the need for multiregional monitoring coordination and adaptive management strategies, including the role of marine protected areas (MPAs) in building resilience.</li>
                         </ul>
+                    </div>
+
+                </div>
+
+                <!-- SIMILARITIES & DIFFERENCES TAB -->
+                <div id="simdiff" class="tab-panel">
+
+                    <!-- Overall Similarities -->
+                    <div class="sim-diff-section">
+                        <h3>What All 5 Sources Share</h3>
+                        <div class="sim-box" style="margin-top: 0;">
+                            <h4>Core Similarities Across All Sources</h4>
+                            <ul>
+                                <li><strong>Temperature is central:</strong> All five identify sea surface temperature (or seabed temperature) as a primary variable controlling kelp distribution and persistence.</li>
+                                <li><strong>Climate change is the overarching threat:</strong> Every source documents or projects kelp decline linked to ocean warming, whether through heatwaves, gradual warming, or boundary current intensification.</li>
+                                <li><strong>Kelp as a foundation species:</strong> All recognize kelp forests as ecologically critical ecosystems that support biodiversity, provide habitat structure, and underpin marine food webs.</li>
+                                <li><strong>Ecological interactions matter:</strong> All acknowledge that biotic factors&mdash;especially herbivory (urchins, tropical fish)&mdash;interact with temperature to determine kelp outcomes.</li>
+                                <li><strong>Conservation urgency:</strong> Every source emphasizes the need for improved modeling, monitoring, and management to protect kelp forests from ongoing and future decline.</li>
+                                <li><strong>Geographic/regional variation:</strong> All highlight that kelp responses to change are not uniform&mdash;local conditions, species composition, and ecological context produce different outcomes in different regions.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Key Differences -->
+                    <div class="sim-diff-section">
+                        <h3>Key Differences Across Sources</h3>
+                        <div class="diff-box" style="margin-top: 0;">
+                            <h4>Where the Sources Diverge</h4>
+                            <ul>
+                                <li><strong>Scale:</strong> Jayathilake &amp; Costello model the <em>entire globe</em>; Beas-Luna focuses on the California Current; Davis focuses on eastern Australia; Verg&eacute;s reviews multiple global hotspots; Batista tracks specific dispersal events in the South Atlantic.</li>
+                                <li><strong>Temporal focus:</strong> Beas-Luna and Verg&eacute;s document <em>current/past</em> observed changes; Davis projects <em>future</em> changes to 2100; Jayathilake maps the <em>present</em> distribution; Batista captures a specific dispersal <em>event</em>.</li>
+                                <li><strong>Tone on kelp&rsquo;s future:</strong> Davis is cautiously <em>optimistic</em> (ecological interactions offset losses); Verg&eacute;s and Beas-Luna are more <em>alarming</em> (documenting massive ongoing losses); Jayathilake is <em>neutral/descriptive</em>; Batista is <em>hopeful</em> (dispersal as recovery mechanism).</li>
+                                <li><strong>Methodology:</strong> MaxEnt modeling (Jayathilake, Batista) vs. stacked SDMs (Davis) vs. Bayesian hierarchical models (Beas-Luna) vs. ecological synthesis/review (Verg&eacute;s).</li>
+                                <li><strong>Primary mechanism of kelp loss:</strong> Direct thermal stress (Jayathilake, Davis) vs. herbivore-driven phase shifts (Verg&eacute;s) vs. combined heatwave + trophic cascades (Beas-Luna) vs. dispersal limitation (Batista).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side Comparison Table -->
+                    <div class="sim-diff-section">
+                        <h3>Source-by-Source Comparison</h3>
+                        <div style="overflow-x: auto;">
+                            <table class="compare-table">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Jayathilake &amp; Costello (2020)</th>
+                                        <th>Davis et al. (2022)</th>
+                                        <th>Beas-Luna et al. (2020)</th>
+                                        <th>Verg&eacute;s et al. (2014)</th>
+                                        <th>Batista et al. (2018)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cat-label">Geographic Scope</td>
+                                        <td>Global (all coastlines)</td>
+                                        <td>Eastern Australia (28&ndash;37.5&deg;S)</td>
+                                        <td>California Current: Alaska to Baja California</td>
+                                        <td>Global hotspots (Japan, Mediterranean, Australia, Americas, Africa)</td>
+                                        <td>South Atlantic (Brazil, Uruguay, Falklands)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Study Type</td>
+                                        <td>Species distribution modeling (MaxEnt)</td>
+                                        <td>Stacked SDMs with ecological interactions</td>
+                                        <td>Long-term monitoring &amp; Bayesian analysis</td>
+                                        <td>Review / ecological synthesis</td>
+                                        <td>Dispersal event documentation &amp; niche modeling</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Key Species</td>
+                                        <td>70 species across order Laminariales</td>
+                                        <td><em>Ecklonia radiata</em>, urchin <em>C. rodgersii</em></td>
+                                        <td>18 functional groups; giant kelp, bull kelp, dragon kelp</td>
+                                        <td>Tropical herbivorous fishes; <em>Ecklonia</em>, <em>Sargassum</em></td>
+                                        <td><em>Macrocystis pyrifera</em>, <em>Durvillaea antarctica</em></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Time Period</td>
+                                        <td>Present distribution (records 1970&ndash;2017)</td>
+                                        <td>Current + projections to 2090&ndash;2100</td>
+                                        <td>2006&ndash;2016 (observed changes)</td>
+                                        <td>~1990s&ndash;2014 (documented shifts)</td>
+                                        <td>2016 dispersal event + present niche modeling</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Main Finding</td>
+                                        <td>Kelp covers 1.47M km&sup2; (22% of coastline); SST = 47.7% of prediction</td>
+                                        <td>Urchin interactions reduce projected losses from -35.2% to -3.5%</td>
+                                        <td>Region-wide kelp decline at -0.043/yr; heatwave drove ~36% of loss</td>
+                                        <td>Tropicalization: tropical fish expand poleward, overgraze temperate kelp</td>
+                                        <td>Kelp rafts dispersed 2,700+ km; suitable habitat exists beyond current ranges</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Outlook</td>
+                                        <td>Neutral/descriptive &mdash; provides baseline for future work</td>
+                                        <td>Cautiously optimistic &mdash; biotic offsets reduce net losses</td>
+                                        <td>Concerning &mdash; ongoing declines with regional reorganization</td>
+                                        <td>Alarming &mdash; global tropicalization is accelerating</td>
+                                        <td>Hopeful &mdash; long-distance dispersal may aid recovery</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cat-label">Socio-Economic Link</td>
+                                        <td>Habitat for commercial fish &amp; mammals</td>
+                                        <td>~$1M AUD/km coast/year in ecosystem services</td>
+                                        <td>Fisheries &amp; recreation across 3 nations; food security</td>
+                                        <td>Impacts on world fisheries &amp; coastal economies</td>
+                                        <td>Conservation planning &amp; transnational management</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Pairwise Comparisons -->
+                    <div class="sim-diff-section">
+                        <h3>Pairwise Source Comparisons</h3>
+
+                        <div class="compare-pair">
+                            <h4>Jayathilake &amp; Costello &harr; Davis et al.</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both use species distribution models (SDMs) to map kelp</li>
+                                        <li>Both identify temperature as the dominant abiotic variable</li>
+                                        <li>Both emphasize conservation applications of their models</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Jayathilake maps <em>present</em> distribution; Davis <em>projects future</em> changes</li>
+                                        <li>Jayathilake uses temperature-only MaxEnt; Davis integrates urchin herbivory into stacked SDMs</li>
+                                        <li>Jayathilake is global; Davis is regional (E. Australia only)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="compare-pair">
+                            <h4>Davis et al. &harr; Beas-Luna et al.</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both study urchin-kelp dynamics as a central driver</li>
+                                        <li>Both document trophic cascade effects on kelp forests</li>
+                                        <li>Both find geographic variation in kelp responses to warming</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Different hemispheres: Australia vs. California Current</li>
+                                        <li>Davis finds warming <em>reduces</em> urchins (benefiting kelp); Beas-Luna finds urchins <em>increasing</em> (harming kelp)</li>
+                                        <li>Davis uses predictive modeling; Beas-Luna uses observed monitoring data</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="compare-pair">
+                            <h4>Verg&eacute;s et al. &harr; Beas-Luna et al.</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both document herbivore-driven kelp loss linked to warming</li>
+                                        <li>Both report poleward shifts in species ranges</li>
+                                        <li>Both emphasize community-level phase shifts, not just kelp decline</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Verg&eacute;s focuses on <em>tropical fish</em> herbivory; Beas-Luna focuses on <em>urchin</em> herbivory</li>
+                                        <li>Verg&eacute;s is a global review; Beas-Luna is a data-driven regional study</li>
+                                        <li>Verg&eacute;s proposes a novel phase-shift framework; Beas-Luna tests specific predictions across ecoregions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="compare-pair">
+                            <h4>Verg&eacute;s et al. &harr; Davis et al.</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both argue biotic interactions (not just temperature) determine kelp fate</li>
+                                        <li>Both study Australian kelp ecosystems</li>
+                                        <li>Both highlight western boundary current warming as a driver</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Verg&eacute;s describes herbivore-mediated kelp <em>loss</em>; Davis describes herbivore-mediated kelp <em>gain</em></li>
+                                        <li>Opposite mechanisms: tropical fish expansion (Verg&eacute;s) vs. urchin decline (Davis)</li>
+                                        <li>Verg&eacute;s is pessimistic; Davis is more optimistic about kelp&rsquo;s future</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="compare-pair">
+                            <h4>Batista et al. &harr; Jayathilake &amp; Costello</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both use MaxEnt species distribution modeling</li>
+                                        <li>Both identify temperature and oceanographic variables as key predictors</li>
+                                        <li>Both contribute to conservation planning through distribution mapping</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Jayathilake maps the entire kelp biome (70 species); Batista models only 2 species</li>
+                                        <li>Batista focuses on <em>dispersal</em> and colonization potential; Jayathilake maps <em>current</em> presence</li>
+                                        <li>Batista documents a specific storm-driven raft event; Jayathilake uses aggregated occurrence records</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="compare-pair">
+                            <h4>Batista et al. &harr; Verg&eacute;s et al.</h4>
+                            <div class="sim-col-layout">
+                                <div class="sim-box">
+                                    <h4><span class="compare-tag tag-sim">Similar</span></h4>
+                                    <ul>
+                                        <li>Both examine how ocean currents shape kelp/species distributions</li>
+                                        <li>Both discuss range shifts driven by changing oceanographic conditions</li>
+                                        <li>Both consider implications for conservation and management</li>
+                                    </ul>
+                                </div>
+                                <div class="diff-box">
+                                    <h4><span class="compare-tag tag-diff">Different</span></h4>
+                                    <ul>
+                                        <li>Batista sees dispersal as a <em>recovery</em> mechanism; Verg&eacute;s sees species movement as a <em>threat</em> (tropical invaders)</li>
+                                        <li>Batista studies kelp movement; Verg&eacute;s studies herbivore movement</li>
+                                        <li>Batista focuses on the South Atlantic; Verg&eacute;s focuses on boundary current hotspots globally</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Venn-style Summary -->
+                    <div class="sim-diff-section">
+                        <h3>At a Glance: What Unites vs. What Divides</h3>
+                        <div class="sim-col-layout">
+                            <div class="sim-box">
+                                <h4>All 5 Sources Agree On</h4>
+                                <ul>
+                                    <li>SST/temperature is the dominant driver</li>
+                                    <li>Kelp forests are declining globally</li>
+                                    <li>Herbivory mediates climate impacts</li>
+                                    <li>Regional context matters enormously</li>
+                                    <li>Better models are needed for conservation</li>
+                                    <li>Kelp loss has socio-economic consequences</li>
+                                </ul>
+                            </div>
+                            <div class="diff-box">
+                                <h4>Sources Disagree / Diverge On</h4>
+                                <ul>
+                                    <li>How severe future losses will be (optimistic vs. alarming)</li>
+                                    <li>Whether warming helps or hurts urchin herbivory</li>
+                                    <li>The primary mechanism of decline (direct thermal stress vs. herbivore shifts)</li>
+                                    <li>Whether long-distance dispersal can compensate for range contractions</li>
+                                    <li>Whether temperature-only models are sufficient for planning</li>
+                                    <li>Scale of analysis needed (global vs. regional vs. local)</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
