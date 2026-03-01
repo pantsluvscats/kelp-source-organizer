@@ -300,7 +300,7 @@
         /* Connection Map */
         .connection-map {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 14px;
             margin: 18px 0;
         }
@@ -583,7 +583,7 @@
 <body>
     <header>
         <h1>Kelp Forest Research ~ Source Color Coding Organizer</h1>
-        <p>5 sources organized by theme with color-coded excerpts and synthesis analysis</p>
+        <p>6 sources organized by theme with color-coded excerpts and synthesis analysis</p>
     </header>
 
     <div class="container">
@@ -800,6 +800,38 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Source 6: Wiber et al. 2012 -->
+                    <div class="source-card" data-source="wiber">
+                        <div class="source-header" onclick="toggleSource(this)">
+                            <div>
+                                <h3>Wiber, Young &amp; Wilson (2012)</h3>
+                                <div class="source-meta">Impact of Aquaculture on Commercial Fisheries: Fishermen's Local Ecological Knowledge | Human Ecology 40</div>
+                            </div>
+                            <span class="source-toggle">&#9660;</span>
+                        </div>
+                        <div class="source-body">
+                            <div class="excerpt theme-blue" data-theme="blue">
+                                <span class="theme-tag">Ecological Interactions</span>
+                                <span class="excerpt-text">Fishermen reported sequential ecological changes near aquaculture sites: <q>In the first year of stocking a salmon cage, commercial species are still found close to the cages; in the second year, commercial species begin to fall off and crab and starfish increase; in the third year, starfish dominate and commercial species become scarce.</q> Aquaculture transforms <q>good bottom</q> (hard gravel habitat for lobster, scallop, urchin) into degraded <q>dead zones,</q> disrupting predator-prey relationships across trophic levels.</span>
+                            </div>
+                            <div class="excerpt theme-purple" data-theme="purple">
+                                <span class="theme-tag">Socio-Economic</span>
+                                <span class="excerpt-text">Inshore fishermen are being <q>increasingly displaced by the expanding aquaculture industry</q> in the Bay of Fundy, forcing them to fish further offshore at greater cost. The fisheries, aquaculture, and seafood processing sectors grew from 912 million to 1,184 million Canadian dollars between 2000 and 2008, yet lobster pound owners reported losing entire holdings to chemical contamination, and herring fishermen listed over 67 productive weir sites that have been shut off by aquaculture placement.</span>
+                            </div>
+                            <div class="excerpt theme-green" data-theme="green">
+                                <span class="theme-tag">Climate Threats</span>
+                                <span class="excerpt-text">While focused on aquaculture rather than climate, fishermen documented environmental degradation paralleling climate-driven kelp loss: <q>green kelp and brown apron kelp are also less common in aquaculture areas,</q> rockweed has declined by 40% at some sites due to eutrophication, and sea urchin roe has become <q>diseased, cancerous, mildewed, discolored</q> near aquaculture operations. These localized stressors compound the broader threats of ocean warming.</span>
+                            </div>
+                            <div class="excerpt theme-pink" data-theme="pink">
+                                <span class="theme-tag">Species Distribution Models</span>
+                                <span class="excerpt-text">Instead of computational SDMs, this study uses <strong>Local Ecological Knowledge (LEK)</strong>&mdash;fishermen&rsquo;s observations accumulated over decades of daily on-water experience. LEK is <q>time sensitive, location specific and holistic</q> and can <q>prioritize and focus limited scientific resources in the form of a knowledge partnership.</q> Focus groups with 15 fishermen (avg. 31 years experience) provided qualitative data validated against provincial aquaculture maps.</span>
+                            </div>
+                            <div class="excerpt theme-orange" data-theme="orange">
+                                <span class="theme-tag">Geographic Variation</span>
+                                <span class="excerpt-text">Impacts varied dramatically across three focus group areas in Southwest New Brunswick: <strong>Deer Island</strong> (most affected, longest aquaculture history, greatest habitat loss), <strong>Campobello Island</strong> (moderate impact, mid-range aquaculture presence), and <strong>Maces Bay</strong> (least affected, most recently introduced aquaculture). Fishermen in Deer Island and Campobello reported lobster nursery areas were leased to aquaculture operators and larvae were no longer observed at those locations.</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- THEMES OVERVIEW TAB -->
@@ -829,6 +861,7 @@
                             <li style="border-left-color: #7eb8f0;"><strong>Davis, Champion &amp; Coleman (2022)</strong> &mdash; Incorporating urchin herbivory into models significantly changes kelp loss projections; reduced urchin grazing at higher latitudes may actually offset some kelp losses (losses shrink from -35.2% to -3.5% under RCP 8.5).</li>
                             <li style="border-left-color: #7eb8f0;"><strong>Verg&eacute;s et al. (2014)</strong> &mdash; Range expansion of tropical herbivorous fish into temperate waters causes overgrazing and community phase shifts away from kelp/macroalgal dominance; ~70% of benthic production is consumed by herbivores globally.</li>
                             <li style="border-left-color: #7eb8f0;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Sea urchin shifts from passive to active herbivory lead to kelp forest deforestation and urchin barren formation; urchins increased at a rate of 0.032 year<sup>-1</sup> across the study region.</li>
+                            <li style="border-left-color: #7eb8f0;"><strong>Wiber, Young &amp; Wilson (2012)</strong> &mdash; Fishermen documented sequential trophic collapse near aquaculture sites: commercial species disappear within 2&ndash;3 years as starfish blooms dominate, kelp and rockweed decline, and predator-prey relationships are disrupted across multiple species.</li>
                         </ul>
                     </div>
 
@@ -856,6 +889,7 @@
                             <li style="border-left-color: #c084fc;"><strong>Beas-Luna et al. (2020)</strong> &mdash; Kelp forests support fisheries and recreation across three nations (USA, Canada, Mexico); the study highlights the urgency of adaptive strategies to <q>sustain livelihoods and ensure food security.</q></li>
                             <li style="border-left-color: #c084fc;"><strong>Verg&eacute;s et al. (2014)</strong> &mdash; Tropicalization impacts world fisheries; the shift in species composition affects commercial catch and coastal economies, with the mass loss of thousands of hectares of kelp in Japan directly impacting fishing communities.</li>
                             <li style="border-left-color: #c084fc;"><strong>Jayathilake &amp; Costello (2020)</strong> &mdash; Kelp forests provide habitat for commercial fish species and mammals of conservation importance; indirect economic benefits stem from kelp&rsquo;s role as a foundation species supporting harvested populations.</li>
+                            <li style="border-left-color: #c084fc;"><strong>Wiber, Young &amp; Wilson (2012)</strong> &mdash; Inshore fishermen in the Bay of Fundy are increasingly displaced by expanding aquaculture, with over 67 herring weir sites shut off and fishermen forced further offshore at greater cost, demonstrating direct economic harm to multi-generational coastal livelihoods.</li>
                         </ul>
                     </div>
 
@@ -1237,6 +1271,11 @@
                                 <span class="year">2018</span>
                                 <br>Kelp dispersal/rafting<br>Niche models for conservation
                             </div>
+                            <div class="connection-node" style="border-color: #c084fc;">
+                                <span class="author">Wiber et al.</span>
+                                <span class="year">2012</span>
+                                <br>Aquaculture vs. fisheries<br>Local ecological knowledge
+                            </div>
                         </div>
                     </div>
 
@@ -1249,6 +1288,8 @@
                             <li><strong style="color: #a03050;">Verg&eacute;s &harr; Beas-Luna:</strong> Verg&eacute;s's tropicalization framework explains the mechanism behind Beas-Luna's observed poleward shifts of functional groups. Beas-Luna's piscivore increases in southern ecoregions align with Verg&eacute;s's prediction of tropical fish invasion.</li>
                             <li><strong style="color: #8a5a10;">Verg&eacute;s &harr; Davis:</strong> Verg&eacute;s describes herbivore-mediated kelp loss (tropical fish) while Davis describes herbivore-mediated kelp <em>gain</em> (urchin decline). Both emphasize that biotic interactions, not just temperature, determine kelp fate&mdash;but through opposite mechanisms.</li>
                             <li><strong style="color: #9b59b6;">Batista &harr; All:</strong> Batista's discovery that kelp can disperse 2,700+ km suggests that range contractions documented by the other four sources may be partially compensated by long-distance colonization of newly suitable habitats&mdash;a recovery mechanism the other studies don't consider.</li>
+                            <li><strong style="color: #7c3aed;">Wiber &harr; All ecological sources:</strong> Wiber et al. adds a human dimension the other five sources lack: fishermen's local ecological knowledge documents the same trophic cascades (kelp loss, urchin decline, habitat degradation) that the ecological studies model or measure, but from the perspective of those whose livelihoods depend on these ecosystems. Their documentation of aquaculture-driven kelp and rockweed loss directly parallels the climate-driven losses described by Beas-Luna and Verg&eacute;s.</li>
+                            <li><strong style="color: #7c3aed;">Wiber &harr; Davis:</strong> Both studies emphasize that ecological interactions (not just a single stressor) determine kelp outcomes. Davis models urchin-kelp dynamics computationally; Wiber documents the same dynamics through decades of fishermen's observations&mdash;qualitative and quantitative approaches reaching similar conclusions about the importance of biotic interactions.</li>
                         </ul>
                     </div>
 
@@ -1263,6 +1304,7 @@
                                     <th style="padding: 8px;">Beas-Luna</th>
                                     <th style="padding: 8px;">Verg&eacute;s</th>
                                     <th style="padding: 8px;">Batista</th>
+                                    <th style="padding: 8px;">Wiber</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1273,6 +1315,7 @@
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9675;</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #e8ddf0;">
                                     <td style="padding: 8px; color: #2d7a2d;">Climate Threats</td>
@@ -1281,9 +1324,11 @@
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9675;</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #e8ddf0;">
                                     <td style="padding: 8px; color: #2a6aaa;">Ecological Interactions</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
@@ -1297,9 +1342,11 @@
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9675;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9675;</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #e8ddf0;">
                                     <td style="padding: 8px; color: #8a5a10;">Geographic Variation</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
@@ -1313,6 +1360,7 @@
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9679;</td>
                                     <td style="text-align: center; padding: 8px;">&#9675;</td>
+                                    <td style="text-align: center; padding: 8px;">&#9679;</td>
                                 </tr>
                             </tbody>
                         </table>
